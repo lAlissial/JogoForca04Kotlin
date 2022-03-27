@@ -14,7 +14,7 @@ class JogoForca04 (palavra_a_ser_usada: String, dica_da_palavra_a_ser_usada: Str
     init{
         this.palavra = palavra_a_ser_usada.trim().uppercase()
         this.dica = dica_da_palavra_a_ser_usada.uppercase()
-        this.penalidades = mutableListOf("perna", "perna", "braço", "braço", "tronco", "cabeça")
+        this.penalidades = mutableListOf("cabeça","tronco","braço","braço","perna", "perna")
     }
 
     fun iniciar() {

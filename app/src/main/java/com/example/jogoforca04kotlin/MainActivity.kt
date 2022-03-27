@@ -2,13 +2,23 @@ package com.example.jogoforca04kotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import android.util.Log
+import android.view.View
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var tvLayout: TextView
-    private lateinit var tvDica: TextView
     private lateinit var banco: Banco
     private lateinit var jogo: JogoForca04
+
+    private lateinit var tvLayout: TextView
+    private lateinit var tvDica: TextView
+    private lateinit var tvLetrasJaUtilizadas: TextView
+    private lateinit var tvQtdeLetras: TextView
+    private lateinit var tvResultado: TextView
+    private lateinit var etLetra: EditText
+    private lateinit var btJogar: Button
+    private lateinit var ivImgForca: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,14 +26,55 @@ class MainActivity : AppCompatActivity() {
 
         this.banco = Banco()
         this.jogo = JogoForca04(this.banco.palavra(),this.banco.dica())
+
         this.jogo.iniciar()
 
         this.tvLayout = findViewById(R.id.tvLayout)
         this.tvDica = findViewById(R.id.tvDica)
+        this.tvLetrasJaUtilizadas = findViewById(R.id.tvLetrasJaUtilizadas)
+        this.tvQtdeLetras = findViewById(R.id.tvQtdeLetras)
+        this.etLetra = findViewById(R.id.etLetra)
+        this.btJogar = findViewById(R.id.btJogar)
+        this.ivImgForca = findViewById(R.id.ivImgForca)
+        this.tvResultado = findViewById(R.id.tvResultado)
 
         this.tvLayout.text = this.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
         this.tvDica.text= this.jogo.getDica()
+        this.tvLetrasJaUtilizadas.text = this.jogo.getLetrasErradas()
+        this.tvQtdeLetras.text = this.jogo.getPalavra().length.toString()
 
+        this.btJogar.setOnClickListener(ClicaBotao())
 
+    }
+    inner class ClicaBotao: View.OnClickListener{
+        override fun onClick(p0: View?){
+            var letra: String
+            var penalidade: String
+            var resID : Number
+            do {
+                letra = this@MainActivity.etLetra.text.toString()
+
+                if (letra.isNotEmpty()){
+                    try {
+                        if (jogo.adivinhou(letra)) {
+                            this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
+                        } else {
+                            penalidade = "hangman0${this@MainActivity.jogo.getErros()}.jpg"
+                            resID= getResources().getIdentifier(penalidade , "drawable", getPackageName());
+                            this@MainActivity.ivImgForca.setImageResource(resID)
+                            this@MainActivity.tvLetrasJaUtilizadas.text = this@MainActivity.jogo.getLetrasErradas()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@MainActivity, "Jogada inválida", Toast.LENGTH_SHORT).show()
+                }
+
+            } while (!jogo.terminou())
+
+            this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
+            this@MainActivity.tvResultado.text = this@MainActivity.jogo.getResultado()
+        }
     }
 }
