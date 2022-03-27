@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             var letra: String
             var penalidade: String
             var resID : Number
-            do {
+            if(!jogo.terminou()){
                 letra = this@MainActivity.etLetra.text.toString()
 
                 if (letra.length == 1){
@@ -70,11 +70,11 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@MainActivity, "Jogada inválida", Toast.LENGTH_SHORT).show()
                 }
-
-            } while (!jogo.terminou())
-
-            this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
-            this@MainActivity.tvResultado.text = this@MainActivity.jogo.getResultado()
+            } else {
+                this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[", "").replace("]", "").replace(",", " ")
+                this@MainActivity.tvResultado.text = this@MainActivity.jogo.getResultado()
+                this@MainActivity.btJogar.isEnabled = false
+            }
         }
     }
 }
