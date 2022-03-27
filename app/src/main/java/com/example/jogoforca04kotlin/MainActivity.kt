@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                         if (jogo.adivinhou(letra)) {
                             this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
                         } else {
-                            penalidade = "hangman0${this@MainActivity.jogo.getErros()}.jpg"
+                            penalidade = "hangman0${this@MainActivity.jogo.getErros()+1}.jpg"
                             resID= getResources().getIdentifier(penalidade , "drawable", getPackageName());
                             this@MainActivity.ivImgForca.setImageResource(resID)
                             this@MainActivity.tvLetrasJaUtilizadas.text = this@MainActivity.jogo.getLetrasErradas()
