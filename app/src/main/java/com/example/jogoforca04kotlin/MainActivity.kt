@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         this.tvLayout.text = this.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
         this.tvDica.text= this.jogo.getDica()
         this.tvLetrasJaUtilizadas.text = this.jogo.getLetrasErradas()
-        this.tvQtdeLetras.text = this.jogo.getPalavra().length.toString()
+        this.tvQtdeLetras.text = "${this.jogo.getPalavra().length} letras"
 
         this.btJogar.setOnClickListener(ClicaBotao())
 
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             do {
                 letra = this@MainActivity.etLetra.text.toString()
 
-                if (letra.isNotEmpty()){
+                if (letra.length == 1){
                     try {
                         if (jogo.adivinhou(letra)) {
                             this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
