@@ -83,6 +83,9 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity.tvResultado.text = this@MainActivity.jogo.getResultado()
                 this@MainActivity.btJogar.isEnabled = false
             }
+
+            this@MainActivity.etLetra.getText().clear()
+
         }
     }
 }
