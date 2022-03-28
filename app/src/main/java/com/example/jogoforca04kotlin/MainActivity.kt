@@ -1,5 +1,7 @@
 package com.example.jogoforca04kotlin
 
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -43,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         this.tvLetrasJaUtilizadas.text = this.jogo.getLetrasErradas()
         this.tvQtdeLetras.text = "${this.jogo.getPalavra().length} letras"
 
+        this@MainActivity.ivImgForca.setImageResource(getResources().getIdentifier("hangman01" , "drawable", getPackageName()))
+
         this.btJogar.setOnClickListener(ClicaBotao())
 
     }
@@ -50,27 +54,31 @@ class MainActivity : AppCompatActivity() {
         override fun onClick(p0: View?){
             var letra: String
             var penalidade: String
+            var res: Resources
             var resID : Number
-            if(!jogo.terminou()){
-                letra = this@MainActivity.etLetra.text.toString()
 
-                if (letra.length == 1){
-                    try {
-                        if (jogo.adivinhou(letra)) {
-                            this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
-                        } else {
-                            penalidade = "hangman0${this@MainActivity.jogo.getErros()+1}.jpg"
-                            resID= getResources().getIdentifier(penalidade , "drawable", getPackageName());
-                            this@MainActivity.ivImgForca.setImageResource(resID)
-                            this@MainActivity.tvLetrasJaUtilizadas.text = this@MainActivity.jogo.getLetrasErradas()
-                        }
-                    } catch (e: Exception) {
-                        Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            letra = this@MainActivity.etLetra.text.toString()
+
+            if (letra.length == 1){
+                try {
+                    if (jogo.adivinhou(letra)) {
+                        this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[","").replace("]","").replace(",", " ")
+
+                    } else {
+                        res = getResources()
+                        penalidade = "hangman0${this@MainActivity.jogo.getErros()+1}"
+                        resID= res.getIdentifier(penalidade , "drawable", getPackageName())
+                        this@MainActivity.ivImgForca.setImageResource(resID)
+                        this@MainActivity.tvLetrasJaUtilizadas.text = this@MainActivity.jogo.getLetrasErradas()
                     }
-                } else {
-                    Toast.makeText(this@MainActivity, "Jogada inválida", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
                 }
             } else {
+                Toast.makeText(this@MainActivity, "Jogada inválida", Toast.LENGTH_SHORT).show()
+            }
+
+             if(jogo.terminou()){
                 this@MainActivity.tvLayout.text = this@MainActivity.jogo.getPalavra().toList().toString().replace("[", "").replace("]", "").replace(",", " ")
                 this@MainActivity.tvResultado.text = this@MainActivity.jogo.getResultado()
                 this@MainActivity.btJogar.isEnabled = false
